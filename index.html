@@ -12,7 +12,7 @@
     --ink:#17110f; --ink2:#1e1613; --surface:#271d1a; --surface2:#31241f;
     --line:rgba(255,255,255,.08); --line2:rgba(255,255,255,.14);
     --blood:#ff2e45; --blood-deep:#c11833; --amber:#ffb020;
-    --teal:#2fd6c3; --teal-deep:#159b8c;
+    --teal:#2fd6c3; --teal-deep:#159b8c; --yt:#ff3b30;
     --text:#f6eee9; --muted:#a89b95; --muted2:#7c706b;
     --r:16px;
   }
@@ -22,11 +22,10 @@
   body{background:
     radial-gradient(120% 80% at 100% 0%, rgba(255,46,69,.10), transparent 55%),
     radial-gradient(120% 80% at 0% 100%, rgba(47,214,195,.06), transparent 55%),
-    var(--ink);
-    min-height:100dvh}
+    var(--ink);min-height:100dvh}
+  a{color:inherit;text-decoration:none}
   .wrap{max-width:520px;margin:0 auto;padding:0 16px 120px}
 
-  /* header */
   header{padding:26px 2px 10px}
   .brandrow{display:flex;align-items:center;justify-content:space-between;gap:12px}
   .brand{display:flex;align-items:baseline;gap:10px}
@@ -38,10 +37,17 @@
   .credit{font-size:11px;color:var(--muted2);letter-spacing:.02em;text-align:right;line-height:1.4}
   .credit b{color:var(--muted);font-weight:600}
 
-  .info-btn{margin-top:14px;display:inline-flex;align-items:center;gap:7px;
+  .toolbar{margin-top:14px;display:flex;gap:8px;flex-wrap:wrap}
+  .tb{display:inline-flex;align-items:center;gap:7px;
     background:var(--surface);border:1px solid var(--line);color:var(--muted);
     font-family:'Barlow';font-weight:600;font-size:12.5px;padding:7px 12px;border-radius:999px;cursor:pointer}
-  .info-btn:hover{color:var(--text);border-color:var(--line2)}
+  .tb:hover{color:var(--text);border-color:var(--line2)}
+  .tb.ch{color:#fff;background:linear-gradient(120deg,var(--yt),#c1271e);border-color:transparent}
+  .tb .yt{width:16px;height:12px;background:#fff;border-radius:3px;position:relative;display:inline-block}
+  .tb .yt::after{content:"";position:absolute;left:6px;top:3px;border-left:6px solid var(--yt);
+    border-top:3px solid transparent;border-bottom:3px solid transparent}
+  .tb.off{opacity:.55}
+
   .rules{margin-top:12px;background:var(--ink2);border:1px solid var(--line);
     border-radius:var(--r);padding:14px 16px;display:none}
   .rules.open{display:block;animation:fade .3s ease}
@@ -50,40 +56,50 @@
   .rules ul b{color:var(--text);font-weight:600}
   .rules .kbar{color:var(--blood);font-weight:700}
 
-  /* day tabs */
-  .days{display:flex;gap:8px;overflow-x:auto;padding:16px 2px 4px;margin:0 -2px;
-    scrollbar-width:none}
+  .days{display:flex;gap:8px;overflow-x:auto;padding:16px 2px 4px;margin:0 -2px;scrollbar-width:none}
   .days::-webkit-scrollbar{display:none}
   .day{flex:0 0 auto;min-width:96px;background:var(--surface);border:1px solid var(--line);
     border-radius:14px;padding:10px 13px;cursor:pointer;transition:.18s;text-align:left}
-  .day .dl{font-family:'Barlow Semi Condensed';font-weight:700;font-size:11px;
-    letter-spacing:.14em;color:var(--muted2)}
+  .day .dl{font-family:'Barlow Semi Condensed';font-weight:700;font-size:11px;letter-spacing:.14em;color:var(--muted2)}
   .day .dt{font-family:'Archivo';font-weight:800;font-size:14.5px;margin-top:2px;white-space:nowrap}
   .day.active{background:linear-gradient(160deg,var(--blood-deep),#7d1022);
     border-color:transparent;box-shadow:0 8px 24px -8px rgba(255,46,69,.5)}
   .day.active .dl{color:rgba(255,255,255,.75)}
   .day.active .dt{color:#fff}
 
-  /* progress strip */
   .dayhead{display:flex;align-items:center;justify-content:space-between;margin:22px 2px 6px}
   .dayhead .h{font-family:'Archivo';font-weight:900;font-size:20px}
   .dayhead .h span{color:var(--blood)}
   .dayprog{font-family:'Barlow Semi Condensed';font-weight:600;font-size:12.5px;color:var(--muted)}
   .dayprog b{color:var(--teal)}
 
-  /* group */
+  .coachbanner{display:flex;align-items:center;gap:12px;margin:10px 2px 4px;
+    background:linear-gradient(120deg,rgba(255,59,48,.14),rgba(255,59,48,.03));
+    border:1px solid rgba(255,59,48,.35);border-radius:14px;padding:12px 14px;cursor:pointer;transition:.15s}
+  .coachbanner:active{transform:translateY(1px)}
+  .coachbanner .play{flex:0 0 auto;width:38px;height:38px;border-radius:10px;background:var(--yt);
+    display:flex;align-items:center;justify-content:center}
+  .coachbanner .play::after{content:"";border-left:13px solid #fff;border-top:8px solid transparent;
+    border-bottom:8px solid transparent;margin-left:3px}
+  .coachbanner .ct{flex:1}
+  .coachbanner .ct .t1{font-family:'Archivo';font-weight:800;font-size:13.5px}
+  .coachbanner .ct .t2{font-family:'Barlow Semi Condensed';font-weight:600;font-size:11.5px;color:var(--muted);margin-top:1px}
+  .coachbanner .arr{color:var(--muted2);font-size:18px}
+
   .group{margin-top:16px}
   .glabel{display:flex;align-items:center;gap:10px;margin:0 2px 10px}
-  .glabel .gn{font-family:'Archivo';font-weight:800;font-size:13px;letter-spacing:.16em;
-    text-transform:uppercase;color:var(--muted)}
+  .glabel .gn{font-family:'Archivo';font-weight:800;font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
   .glabel .gline{flex:1;height:1px;background:var(--line)}
 
-  /* exercise card */
-  .ex{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
-    padding:14px 15px;margin-bottom:10px}
-  .ex .top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+  .ex{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 15px;margin-bottom:10px}
+  .ex .top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
   .ex .name{font-weight:600;font-size:15.5px;line-height:1.3}
-  .ex .meta{margin-top:7px;display:flex;gap:7px;flex-wrap:wrap}
+  .coachlink{flex:0 0 auto;display:inline-flex;align-items:center;gap:5px;
+    background:var(--ink2);border:1px solid rgba(255,59,48,.4);color:#ff6a60;
+    font-family:'Barlow Semi Condensed';font-weight:700;font-size:11.5px;padding:5px 9px;border-radius:8px;white-space:nowrap}
+  .coachlink:active{transform:scale(.96)}
+  .coachlink .p{border-left:8px solid #ff6a60;border-top:5px solid transparent;border-bottom:5px solid transparent}
+  .ex .meta{margin-top:9px;display:flex;gap:7px;flex-wrap:wrap}
   .chip{font-family:'Barlow Semi Condensed';font-weight:600;font-size:12px;
     background:var(--ink2);border:1px solid var(--line);border-radius:8px;padding:3px 8px;color:var(--muted)}
   .chip b{color:var(--text);font-weight:700}
@@ -93,10 +109,8 @@
   .dot{width:26px;height:26px;border-radius:8px;border:1.5px solid var(--line2);
     background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;
     font-family:'Barlow Semi Condensed';font-weight:700;font-size:11px;color:var(--muted2);transition:.15s}
-  .dot.on{background:var(--blood);border-color:var(--blood);color:#fff;
-    box-shadow:0 0 14px -2px rgba(255,46,69,.7)}
+  .dot.on{background:var(--blood);border-color:var(--blood);color:#fff;box-shadow:0 0 14px -2px rgba(255,46,69,.7)}
 
-  /* FST7 card */
   .ex.f7{border:1px solid rgba(255,46,69,.4);
     background:linear-gradient(180deg,rgba(255,46,69,.09),rgba(255,46,69,.02));
     box-shadow:inset 0 0 0 1px rgba(255,46,69,.08)}
@@ -106,13 +120,10 @@
     box-shadow:0 0 0 0 rgba(255,46,69,.6);animation:pulse 1.6s infinite}
   .startbtn{margin-top:13px;width:100%;border:none;cursor:pointer;border-radius:12px;
     padding:14px;font-family:'Archivo';font-weight:900;font-size:14.5px;letter-spacing:.04em;color:#fff;
-    background:linear-gradient(120deg,var(--blood),var(--blood-deep));
-    box-shadow:0 10px 26px -10px rgba(255,46,69,.7)}
+    background:linear-gradient(120deg,var(--blood),var(--blood-deep));box-shadow:0 10px 26px -10px rgba(255,46,69,.7)}
   .startbtn:active{transform:translateY(1px)}
-  .startbtn.done{background:var(--surface2);color:var(--teal);
-    border:1px solid rgba(47,214,195,.35);box-shadow:none}
+  .startbtn.done{background:var(--surface2);color:var(--teal);border:1px solid rgba(47,214,195,.35);box-shadow:none}
 
-  /* hydration footer bar */
   .hydro{position:fixed;left:0;right:0;bottom:0;z-index:40;
     background:rgba(23,17,15,.82);backdrop-filter:blur(14px);border-top:1px solid var(--line)}
   .hydro .in{max-width:520px;margin:0 auto;padding:12px 18px calc(12px + env(safe-area-inset-bottom));
@@ -120,14 +131,11 @@
   .hydro .lab{font-family:'Barlow Semi Condensed';font-weight:600;font-size:12.5px;color:var(--muted)}
   .hydro .lab b{color:var(--teal);font-weight:700}
   .hydro .track{flex:1;height:8px;border-radius:99px;background:var(--surface2);overflow:hidden;margin:0 4px}
-  .hydro .fill{height:100%;width:0;background:linear-gradient(90deg,var(--teal-deep),var(--teal));
-    transition:width .4s ease}
+  .hydro .fill{height:100%;width:0;background:linear-gradient(90deg,var(--teal-deep),var(--teal));transition:width .4s ease}
   .hydro button{border:none;cursor:pointer;background:var(--surface2);color:var(--teal);
-    width:36px;height:36px;border-radius:10px;font-size:18px;font-weight:700;
-    border:1px solid rgba(47,214,195,.3)}
+    width:36px;height:36px;border-radius:10px;font-size:18px;font-weight:700;border:1px solid rgba(47,214,195,.3)}
   .hydro button:active{transform:scale(.94)}
 
-  /* ==== FST7 TIMER OVERLAY ==== */
   .overlay{position:fixed;inset:0;z-index:60;background:rgba(10,7,6,.7);
     backdrop-filter:blur(8px);display:none;align-items:flex-end;justify-content:center}
   .overlay.open{display:flex;animation:fade .25s ease}
@@ -138,9 +146,24 @@
   .sheet .exname{font-family:'Archivo';font-weight:800;font-size:18px;text-align:center}
   .sheet .exsub{text-align:center;color:var(--muted);font-family:'Barlow Semi Condensed';
     font-weight:600;font-size:12.5px;letter-spacing:.06em;margin-top:3px}
+  .sheet .coachrow{text-align:center;margin-top:10px}
+  .sheet .coachrow a{display:inline-flex;align-items:center;gap:6px;color:#ff6a60;
+    font-family:'Barlow Semi Condensed';font-weight:700;font-size:12.5px;
+    border:1px solid rgba(255,59,48,.4);border-radius:8px;padding:5px 11px}
+  .sheet .coachrow a .p{border-left:8px solid #ff6a60;border-top:5px solid transparent;border-bottom:5px solid transparent}
 
-  /* seven segments */
-  .seg7{display:flex;gap:7px;justify-content:center;margin:20px 0 6px}
+  .demowrap{margin-top:11px;background:linear-gradient(180deg,#1c1613,#161010);
+    border:1px solid var(--line);border-radius:12px;overflow:hidden;position:relative}
+  .demowrap::after{content:"DEMO";position:absolute;top:7px;right:9px;font-family:'Barlow Semi Condensed';
+    font-weight:700;font-size:9px;letter-spacing:.18em;color:var(--muted2);opacity:.6}
+  svg.demo{display:block;width:100%;height:96px}
+  svg.demo .fg{stroke:#e9ded7;fill:none;stroke-linecap:round;stroke-linejoin:round}
+  svg.demo .ac{stroke:var(--blood);fill:none;stroke-linecap:round;stroke-linejoin:round}
+  svg.demo .acf{fill:var(--blood);stroke:none}
+  svg.demo .fgf{fill:#e9ded7;stroke:none}
+  svg.demo .eq{stroke:#8a7d77;fill:none;stroke-linecap:round}
+
+  .seg7{display:flex;gap:7px;justify-content:center;margin:18px 0 6px}
   .seg{flex:1;max-width:38px;height:52px;border-radius:9px;background:var(--surface);
     border:1px solid var(--line);position:relative;overflow:hidden;transition:.2s}
   .seg .fillbar{position:absolute;inset:0;transform:translateY(100%);
@@ -152,25 +175,22 @@
   .seg.filled .num{color:#fff}
   .seg.active .num{color:var(--teal)}
 
-  /* big stage */
   .stage{text-align:center;padding:14px 0 4px}
-  .stagelabel{font-family:'Barlow Semi Condensed';font-weight:700;font-size:12px;
-    letter-spacing:.2em;text-transform:uppercase}
+  .stagelabel{font-family:'Barlow Semi Condensed';font-weight:700;font-size:12px;letter-spacing:.2em;text-transform:uppercase}
   .stage.work .stagelabel{color:var(--blood)}
   .stage.rest .stagelabel{color:var(--teal)}
   .stage.done .stagelabel{color:var(--amber)}
   .bignum{font-family:'Anton',sans-serif;font-size:76px;line-height:.92;margin:2px 0}
   .stage.work .bignum{color:var(--text)}
   .stage.rest .bignum{color:var(--teal);text-shadow:0 0 30px rgba(47,214,195,.4)}
+  .stage.rest.warn .bignum{color:var(--amber);text-shadow:0 0 30px rgba(255,176,32,.5);animation:blink .5s}
   .stage.done .bignum{color:var(--amber);font-size:52px}
   .stagehint{color:var(--muted);font-size:13.5px;min-height:20px}
   .stagehint .water{color:var(--teal);font-weight:600}
 
-  .ring{width:0;height:0}
   .primary{margin-top:16px;width:100%;border:none;cursor:pointer;border-radius:14px;padding:17px;
     font-family:'Archivo';font-weight:900;font-size:16px;letter-spacing:.04em;color:#fff;
-    background:linear-gradient(120deg,var(--blood),var(--blood-deep));
-    box-shadow:0 12px 30px -12px rgba(255,46,69,.8)}
+    background:linear-gradient(120deg,var(--blood),var(--blood-deep));box-shadow:0 12px 30px -12px rgba(255,46,69,.8)}
   .primary.rest{background:linear-gradient(120deg,var(--teal),var(--teal-deep));
     box-shadow:0 12px 30px -12px rgba(47,214,195,.7);color:#04211d}
   .primary.done{background:linear-gradient(120deg,var(--amber),#d98800);color:#241500}
@@ -188,6 +208,7 @@
   @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,46,69,.6)}70%{box-shadow:0 0 0 8px rgba(255,46,69,0)}100%{box-shadow:0 0 0 0 rgba(255,46,69,0)}}
   @keyframes fade{from{opacity:0}to{opacity:1}}
   @keyframes slideup{from{transform:translateY(30px);opacity:.4}to{transform:translateY(0);opacity:1}}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.35}}
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -201,7 +222,11 @@
       </div>
       <div class="credit"><b>Hany Rambod</b> 방식<br>2026 루틴</div>
     </div>
-    <button class="info-btn" id="infoBtn">ⓘ FST-7 규칙</button>
+    <div class="toolbar">
+      <a class="tb ch" href="https://www.youtube.com/@hanyrambod_FST7" target="_blank" rel="noopener"><span class="yt"></span>Hany Rambod 채널</a>
+      <button class="tb" id="infoBtn">ⓘ FST-7 규칙</button>
+      <button class="tb" id="soundBtn">🔔 알림 ON</button>
+    </div>
     <div class="rules" id="rules">
       <h4>핵심 원리</h4>
       <ul>
@@ -210,6 +235,7 @@
         <li>머신·케이블 위주. 무거운 복합운동엔 X (자세 무너짐)</li>
         <li>세트마다 <b>물 한 모금</b>, 하루 3~4L. 혈액 90%가 물이라 펌핑에 직결</li>
         <li>초보라면 주당 FST-7 파이널은 <b>2개 부위</b>까지만</li>
+        <li>운동마다 <b>▶ 코칭</b> 누르면 하니 램보드 시연 영상으로 이동</li>
       </ul>
     </div>
   </header>
@@ -221,10 +247,15 @@
     <div class="dayprog" id="dayProg"></div>
   </div>
 
+  <a class="coachbanner" id="coachBanner" target="_blank" rel="noopener">
+    <span class="play"></span>
+    <span class="ct"><span class="t1">하니 램보드 풀세션 코칭</span><span class="t2" id="coachSub">오늘 부위 전체 영상 보기</span></span>
+    <span class="arr">›</span>
+  </a>
+
   <main id="main"></main>
 </div>
 
-<!-- hydration bar -->
 <div class="hydro">
   <div class="in">
     <div class="lab">💧 물 <b id="waterCount">0</b>/12</div>
@@ -233,12 +264,12 @@
   </div>
 </div>
 
-<!-- FST7 timer overlay -->
 <div class="overlay" id="overlay">
   <div class="sheet">
     <div class="grab"></div>
     <div class="exname" id="tExName">—</div>
     <div class="exsub" id="tExSub">FST-7 파이널 · 7세트</div>
+    <div class="coachrow"><a id="tCoach" target="_blank" rel="noopener"><span class="p"></span>이 운동 코칭 영상</a></div>
 
     <div class="seg7" id="seg7"></div>
 
@@ -262,82 +293,246 @@
 </div>
 
 <script>
-/* ---------------- ROUTINE DATA (2026 FST-7 5-day split) ---------------- */
+const YT = q => 'https://www.youtube.com/results?search_query=' + encodeURIComponent('Hany Rambod FST7 ' + q);
+
+/* ===== EXERCISE MOTION DEMOS (original looping SVG animations) ===== */
+const D = s => `<svg class="demo" viewBox="0 0 116 84" preserveAspectRatio="xMidYMid meet">${s}</svg>`;
+const FLOOR = '<line class="eq" x1="16" y1="76" x2="100" y2="76" stroke-width="1.5" opacity=".35"/>';
+const HEAD = (x,y) => `<circle class="fgf" cx="${x}" cy="${y}" r="5"/>`;
+const SP = '0.42 0 0.58 1;0.42 0 0.58 1';
+const rot = (v,d) => `<animateTransform attributeName="transform" type="rotate" values="${v}" keyTimes="0;0.5;1" dur="${d||'1.8s'}" calcMode="spline" keySplines="${SP}" repeatCount="indefinite"/>`;
+const tr  = (v,d) => `<animateTransform attributeName="transform" type="translate" values="${v}" keyTimes="0;0.5;1" dur="${d||'1.8s'}" calcMode="spline" keySplines="${SP}" repeatCount="indefinite"/>`;
+
+const DEMOS = {
+  curl: D(`${FLOOR}${HEAD(54,15)}
+    <line class="fg" x1="54" y1="20" x2="52" y2="47" stroke-width="4"/>
+    <line class="fg" x1="52" y1="47" x2="59" y2="72" stroke-width="4"/>
+    <line class="fg" x1="52" y1="47" x2="46" y2="72" stroke-width="4"/>
+    <line class="fg" x1="54" y1="24" x2="56" y2="44" stroke-width="4"/>
+    <g><line class="ac" x1="56" y1="44" x2="64" y2="51" stroke-width="4"/><circle class="acf" cx="65" cy="52" r="3.5"/>${rot('0 56 44;-105 56 44;0 56 44')}</g>`),
+
+  pushdown: D(`${FLOOR}${HEAD(54,15)}
+    <line class="fg" x1="54" y1="20" x2="52" y2="47" stroke-width="4"/>
+    <line class="fg" x1="52" y1="47" x2="59" y2="72" stroke-width="4"/>
+    <line class="fg" x1="52" y1="47" x2="46" y2="72" stroke-width="4"/>
+    <circle class="eq" cx="72" cy="7" r="2.5" stroke-width="1.5"/><line class="eq" x1="72" y1="9" x2="72" y2="20" stroke-width="1.5"/>
+    <line class="fg" x1="54" y1="24" x2="57" y2="42" stroke-width="4"/>
+    <g><line class="ac" x1="57" y1="42" x2="61" y2="60" stroke-width="4"/><line class="eq" x1="57" y1="60" x2="65" y2="60" stroke-width="2.5"/>${rot('-58 57 42;0 57 42;-58 57 42')}</g>`),
+
+  ohext: D(`${FLOOR}${HEAD(54,20)}
+    <line class="fg" x1="54" y1="25" x2="52" y2="49" stroke-width="4"/>
+    <line class="fg" x1="52" y1="49" x2="59" y2="72" stroke-width="4"/>
+    <line class="fg" x1="52" y1="49" x2="46" y2="72" stroke-width="4"/>
+    <line class="fg" x1="54" y1="26" x2="52" y2="9" stroke-width="4"/>
+    <g><line class="ac" x1="52" y1="9" x2="46" y2="20" stroke-width="4"/><circle class="acf" cx="45" cy="21" r="3.5"/>${rot('0 52 9;-72 52 9;0 52 9')}</g>`),
+
+  ohpress: D(`${FLOOR}${HEAD(54,17)}
+    <line class="fg" x1="54" y1="22" x2="52" y2="47" stroke-width="4"/>
+    <line class="fg" x1="52" y1="47" x2="59" y2="72" stroke-width="4"/>
+    <line class="fg" x1="52" y1="47" x2="46" y2="72" stroke-width="4"/>
+    <g><line class="ac" x1="54" y1="25" x2="70" y2="27" stroke-width="4"/><line class="eq" x1="68" y1="22" x2="72" y2="32" stroke-width="3"/>${rot('0 54 25;-80 54 25;0 54 25')}</g>`),
+
+  lateral: D(`${FLOOR}${HEAD(58,14)}
+    <line class="fg" x1="58" y1="19" x2="58" y2="50" stroke-width="4"/>
+    <line class="fg" x1="58" y1="50" x2="50" y2="72" stroke-width="4"/>
+    <line class="fg" x1="58" y1="50" x2="66" y2="72" stroke-width="4"/>
+    <g><line class="ac" x1="49" y1="26" x2="43" y2="47" stroke-width="4"/>${rot('0 49 26;-72 49 26;0 49 26')}</g>
+    <g><line class="ac" x1="67" y1="26" x2="73" y2="47" stroke-width="4"/>${rot('0 67 26;72 67 26;0 67 26')}</g>`),
+
+  fly: D(`${FLOOR}${HEAD(58,14)}
+    <line class="fg" x1="58" y1="19" x2="58" y2="50" stroke-width="4"/>
+    <line class="fg" x1="58" y1="50" x2="50" y2="72" stroke-width="4"/>
+    <line class="fg" x1="58" y1="50" x2="66" y2="72" stroke-width="4"/>
+    <g><line class="ac" x1="49" y1="27" x2="30" y2="31" stroke-width="4"/><circle class="acf" cx="29" cy="31" r="3"/>${rot('0 49 27;38 49 27;0 49 27')}</g>
+    <g><line class="ac" x1="67" y1="27" x2="86" y2="31" stroke-width="4"/><circle class="acf" cx="87" cy="31" r="3"/>${rot('0 67 27;-38 67 27;0 67 27')}</g>`),
+
+  pulldown: D(`${FLOOR}${HEAD(54,17)}
+    <line class="fg" x1="54" y1="22" x2="52" y2="47" stroke-width="4"/>
+    <line class="fg" x1="52" y1="47" x2="59" y2="72" stroke-width="4"/>
+    <line class="fg" x1="52" y1="47" x2="46" y2="72" stroke-width="4"/>
+    <g><line class="ac" x1="54" y1="25" x2="58" y2="7" stroke-width="4"/><line class="eq" x1="49" y1="6" x2="67" y2="6" stroke-width="2.5"/>${rot('0 54 25;40 54 25;0 54 25')}</g>`),
+
+  row: D(`${FLOOR}${HEAD(48,17)}
+    <line class="fg" x1="48" y1="22" x2="52" y2="47" stroke-width="4"/>
+    <line class="fg" x1="52" y1="47" x2="59" y2="72" stroke-width="4"/>
+    <line class="fg" x1="52" y1="47" x2="46" y2="72" stroke-width="4"/>
+    <line class="eq" x1="92" y1="18" x2="70" y2="40" stroke-width="1.5" opacity=".4"/>
+    <g><line class="ac" x1="50" y1="25" x2="70" y2="40" stroke-width="4"/><line class="eq" x1="68" y1="36" x2="72" y2="44" stroke-width="3"/>${rot('0 50 25;-30 50 25;0 50 25')}</g>`),
+
+  shrug: D(`${FLOOR}${HEAD(54,15)}
+    <line class="fg" x1="54" y1="20" x2="52" y2="47" stroke-width="4"/>
+    <line class="fg" x1="52" y1="47" x2="59" y2="72" stroke-width="4"/>
+    <line class="fg" x1="52" y1="47" x2="46" y2="72" stroke-width="4"/>
+    <g><line class="ac" x1="48" y1="26" x2="48" y2="50" stroke-width="4"/><circle class="acf" cx="48" cy="52" r="3.5"/>
+       <line class="ac" x1="60" y1="26" x2="60" y2="50" stroke-width="4"/><circle class="acf" cx="60" cy="52" r="3.5"/>${tr('0 0;0 -6;0 0')}</g>`),
+
+  calf: D(`${FLOOR}<line class="eq" x1="44" y1="72" x2="62" y2="72" stroke-width="2.5"/>
+    <g>${HEAD(54,17)}
+      <line class="fg" x1="54" y1="22" x2="53" y2="49" stroke-width="4"/>
+      <line class="fg" x1="53" y1="49" x2="50" y2="70" stroke-width="4"/>
+      <line class="fg" x1="53" y1="49" x2="57" y2="70" stroke-width="4"/>
+      <line class="fg" x1="54" y1="26" x2="60" y2="48" stroke-width="3.5"/>${tr('0 0;0 -9;0 0','1.4s')}</g>`),
+
+  hinge: D(`${FLOOR}
+    <line class="fg" x1="52" y1="48" x2="59" y2="72" stroke-width="4"/>
+    <line class="fg" x1="52" y1="48" x2="46" y2="72" stroke-width="4"/>
+    <g>${HEAD(54,20)}
+      <line class="fg" x1="54" y1="24" x2="52" y2="48" stroke-width="4"/>
+      <line class="ac" x1="53" y1="30" x2="53" y2="52" stroke-width="4"/>
+      <line class="ac" x1="44" y1="53" x2="62" y2="53" stroke-width="3.5"/>
+      <circle class="acf" cx="44" cy="53" r="3.5"/><circle class="acf" cx="62" cy="53" r="3.5"/>${rot('0 52 48;44 52 48;0 52 48')}</g>`),
+
+  dip: D(`${FLOOR}
+    <line class="eq" x1="40" y1="40" x2="40" y2="72" stroke-width="2"/>
+    <line class="eq" x1="72" y1="40" x2="72" y2="72" stroke-width="2"/>
+    <g>${HEAD(56,20)}
+      <line class="fg" x1="56" y1="25" x2="56" y2="46" stroke-width="4"/>
+      <line class="fg" x1="56" y1="46" x2="51" y2="62" stroke-width="4"/>
+      <line class="fg" x1="56" y1="46" x2="61" y2="62" stroke-width="4"/>
+      <line class="ac" x1="56" y1="27" x2="46" y2="40" stroke-width="3.5"/>
+      <line class="ac" x1="56" y1="27" x2="66" y2="40" stroke-width="3.5"/>${tr('0 0;0 9;0 0')}</g>`),
+
+  benchpress: D(`${FLOOR}
+    <line class="eq" x1="26" y1="57" x2="78" y2="57" stroke-width="3"/>
+    <line class="eq" x1="31" y1="57" x2="31" y2="70" stroke-width="2"/>
+    <line class="eq" x1="73" y1="57" x2="73" y2="70" stroke-width="2"/>
+    ${HEAD(34,51)}
+    <line class="fg" x1="38" y1="53" x2="66" y2="53" stroke-width="4"/>
+    <line class="fg" x1="66" y1="53" x2="74" y2="71" stroke-width="4"/>
+    <g><line class="ac" x1="44" y1="53" x2="44" y2="35" stroke-width="4"/><line class="ac" x1="36" y1="33" x2="52" y2="33" stroke-width="3.5"/><circle class="acf" cx="36" cy="33" r="3"/><circle class="acf" cx="52" cy="33" r="3"/>${rot('20 44 53;0 44 53;20 44 53')}</g>`),
+
+  squat: D(`${FLOOR}
+    <g>${rot('0 52 70;-16 52 70;0 52 70')}
+      <line class="fg" x1="52" y1="70" x2="54" y2="50" stroke-width="4"/>
+      <g>${rot('0 54 50;52 54 50;0 54 50')}
+        <line class="fg" x1="54" y1="50" x2="53" y2="30" stroke-width="4"/>
+        <g>${HEAD(54,20)}
+          <line class="fg" x1="54" y1="25" x2="53" y2="31" stroke-width="4"/>
+          <line class="eq" x1="45" y1="24" x2="63" y2="24" stroke-width="3"/>
+          <line class="fg" x1="53" y1="27" x2="46" y2="24" stroke-width="3"/>
+          <line class="fg" x1="53" y1="27" x2="60" y2="24" stroke-width="3"/>
+        </g>
+      </g>
+    </g>
+    <line class="fg" x1="52" y1="70" x2="46" y2="72" stroke-width="4"/>`),
+
+  legext: D(`${FLOOR}
+    <line class="eq" x1="30" y1="55" x2="54" y2="55" stroke-width="3"/>
+    <line class="eq" x1="33" y1="55" x2="33" y2="70" stroke-width="2"/>
+    ${HEAD(58,26)}
+    <line class="fg" x1="58" y1="31" x2="55" y2="53" stroke-width="4"/>
+    <line class="fg" x1="55" y1="53" x2="39" y2="54" stroke-width="4"/>
+    <g><line class="ac" x1="39" y1="54" x2="39" y2="70" stroke-width="4"/><circle class="acf" cx="39" cy="71" r="3"/><line class="eq" x1="35" y1="66" x2="43" y2="66" stroke-width="2.5"/>${rot('0 39 54;-82 39 54;0 39 54')}</g>`),
+
+  legcurl: D(`${FLOOR}
+    <line class="eq" x1="22" y1="55" x2="76" y2="55" stroke-width="3"/>
+    ${HEAD(28,51)}
+    <line class="fg" x1="32" y1="53" x2="62" y2="53" stroke-width="4"/>
+    <line class="fg" x1="62" y1="53" x2="78" y2="54" stroke-width="4"/>
+    <g><line class="ac" x1="78" y1="54" x2="94" y2="54" stroke-width="4"/><circle class="acf" cx="95" cy="54" r="3"/><line class="eq" x1="90" y1="50" x2="90" y2="58" stroke-width="2.5"/>${rot('0 78 54;-102 78 54;0 78 54')}</g>`),
+
+  legpress: D(`${FLOOR}
+    <line class="eq" x1="24" y1="68" x2="40" y2="50" stroke-width="3"/>
+    ${HEAD(28,60)}
+    <line class="fg" x1="32" y1="58" x2="46" y2="54" stroke-width="4"/>
+    <g><line class="fg" x1="46" y1="54" x2="60" y2="47" stroke-width="4"/><line class="ac" x1="60" y1="47" x2="61" y2="64" stroke-width="4"/><line class="eq" x1="55" y1="66" x2="67" y2="66" stroke-width="3"/>${rot('34 46 54;0 46 54;34 46 54')}</g>`),
+};
+
+const MOVE = {
+  'incline barbell bench press':'benchpress','flat dumbbell press chest':'benchpress',
+  'cable crossover chest':'fly','pec deck fly':'fly','triceps dips':'dip',
+  'overhead dumbbell triceps extension':'ohext','cable rope pushdown triceps':'pushdown',
+  'deadlift back':'hinge','wide lat pulldown':'pulldown','barbell row back':'row',
+  'seated cable row':'row','straight arm pulldown':'pulldown','standing calf raise':'calf',
+  'seated calf raise':'calf','seated dumbbell shoulder press':'ohpress','side lateral raise':'lateral',
+  'rear delt pec deck':'fly','cable lateral raise':'lateral','dumbbell shrug traps':'shrug',
+  'cable shrug':'shrug','leg extension warmup':'legext','barbell squat':'squat','leg press':'legpress',
+  'romanian deadlift':'hinge','lying leg curl':'legcurl','leg extension':'legext',
+  'barbell curl biceps':'curl','incline dumbbell curl':'curl','ez bar preacher curl':'curl',
+  'close grip bench press triceps':'benchpress','rope overhead triceps extension':'ohext',
+  'rope pushdown triceps':'pushdown',
+};
+const demoFor = q => DEMOS[MOVE[q]] || '';
+
 const ROUTINE = [
   { label:'DAY 1', title:'가슴 · 삼두', hl:'가슴',
+    coach:'https://www.youtube.com/watch?v=pZZzyBKH-GY',
     groups:[
       { part:'가슴', ex:[
-        {n:'인클라인 바벨 벤치프레스', s:4, r:'8-10', rest:'2-3분'},
-        {n:'플랫 덤벨 프레스', s:3, r:'8-10', rest:'2분'},
-        {n:'케이블 크로스오버', s:3, r:'10-12', rest:'60초'},
-        {n:'펙덱 플라이', s:7, r:'8-12', rest:'30-45초', f7:true},
+        {n:'인클라인 바벨 벤치프레스', s:4, r:'8-10', rest:'2-3분', q:'incline barbell bench press'},
+        {n:'플랫 덤벨 프레스', s:3, r:'8-10', rest:'2분', q:'flat dumbbell press chest'},
+        {n:'케이블 크로스오버', s:3, r:'10-12', rest:'60초', q:'cable crossover chest'},
+        {n:'펙덱 플라이', s:7, r:'8-12', rest:'30-45초', f7:true, q:'pec deck fly'},
       ]},
       { part:'삼두', ex:[
-        {n:'딥스', s:3, r:'8-10', rest:'90초'},
-        {n:'오버헤드 덤벨 익스텐션', s:3, r:'10-12', rest:'75초'},
-        {n:'케이블 로프 푸시다운', s:7, r:'8-12', rest:'30-45초', f7:true},
+        {n:'딥스', s:3, r:'8-10', rest:'90초', q:'triceps dips'},
+        {n:'오버헤드 덤벨 익스텐션', s:3, r:'10-12', rest:'75초', q:'overhead dumbbell triceps extension'},
+        {n:'케이블 로프 푸시다운', s:7, r:'8-12', rest:'30-45초', f7:true, q:'cable rope pushdown triceps'},
       ]},
     ]},
   { label:'DAY 2', title:'등 · 종아리', hl:'등',
+    coach: YT('back day'),
     groups:[
       { part:'등', ex:[
-        {n:'데드리프트 (또는 랙풀)', s:4, r:'6-8', rest:'3분'},
-        {n:'와이드 랫풀다운', s:3, r:'8-10', rest:'2분'},
-        {n:'바벨 로우', s:3, r:'8-10', rest:'2분'},
-        {n:'시티드 케이블 로우', s:3, r:'10-12', rest:'90초'},
-        {n:'스트레이트암 랫풀다운', s:7, r:'8-12', rest:'30-45초', f7:true},
+        {n:'데드리프트 (또는 랙풀)', s:4, r:'6-8', rest:'3분', q:'deadlift back'},
+        {n:'와이드 랫풀다운', s:3, r:'8-10', rest:'2분', q:'wide lat pulldown'},
+        {n:'바벨 로우', s:3, r:'8-10', rest:'2분', q:'barbell row back'},
+        {n:'시티드 케이블 로우', s:3, r:'10-12', rest:'90초', q:'seated cable row'},
+        {n:'스트레이트암 랫풀다운', s:7, r:'8-12', rest:'30-45초', f7:true, q:'straight arm pulldown'},
       ]},
       { part:'종아리', ex:[
-        {n:'스탠딩 카프 레이즈', s:3, r:'10-15', rest:'75초'},
-        {n:'시티드 카프 레이즈', s:7, r:'10-15', rest:'30-45초', f7:true},
+        {n:'스탠딩 카프 레이즈', s:3, r:'10-15', rest:'75초', q:'standing calf raise'},
+        {n:'시티드 카프 레이즈', s:7, r:'10-15', rest:'30-45초', f7:true, q:'seated calf raise'},
       ]},
     ]},
   { label:'DAY 3', title:'어깨 · 승모', hl:'어깨',
+    coach: YT('shoulder day'),
     groups:[
       { part:'어깨', ex:[
-        {n:'시티드 덤벨 숄더프레스', s:4, r:'8-10', rest:'2분'},
-        {n:'사이드 레터럴 레이즈', s:3, r:'10-12', rest:'75초'},
-        {n:'리어델트 펙덱 플라이', s:3, r:'12-15', rest:'60초'},
-        {n:'케이블 사이드 레터럴 레이즈', s:7, r:'8-12', rest:'30-45초', f7:true},
+        {n:'시티드 덤벨 숄더프레스', s:4, r:'8-10', rest:'2분', q:'seated dumbbell shoulder press'},
+        {n:'사이드 레터럴 레이즈', s:3, r:'10-12', rest:'75초', q:'side lateral raise'},
+        {n:'리어델트 펙덱 플라이', s:3, r:'12-15', rest:'60초', q:'rear delt pec deck'},
+        {n:'케이블 사이드 레터럴 레이즈', s:7, r:'8-12', rest:'30-45초', f7:true, q:'cable lateral raise'},
       ]},
       { part:'승모', ex:[
-        {n:'덤벨 슈러그', s:3, r:'10-12', rest:'75초'},
-        {n:'케이블 슈러그', s:7, r:'10-12', rest:'30-45초', f7:true},
+        {n:'덤벨 슈러그', s:3, r:'10-12', rest:'75초', q:'dumbbell shrug traps'},
+        {n:'케이블 슈러그', s:7, r:'10-12', rest:'30-45초', f7:true, q:'cable shrug'},
       ]},
     ]},
   { label:'DAY 4', title:'하체', hl:'하체',
+    coach:'https://www.youtube.com/watch?v=bTAecBPK4sA',
     groups:[
       { part:'하체', ex:[
-        {n:'레그 익스텐션 (웜업)', s:3, r:'15-20', rest:'45초'},
-        {n:'바벨 스쿼트', s:4, r:'8-10', rest:'3분'},
-        {n:'레그프레스', s:3, r:'10-12', rest:'2분'},
-        {n:'루마니안 데드리프트', s:3, r:'8-10', rest:'2분'},
-        {n:'라잉 레그컬', s:3, r:'10-12', rest:'75초'},
-        {n:'레그 익스텐션 (파이널)', s:7, r:'10-15', rest:'30-45초', f7:true},
+        {n:'레그 익스텐션 (웜업)', s:3, r:'15-20', rest:'45초', q:'leg extension warmup'},
+        {n:'바벨 스쿼트', s:4, r:'8-10', rest:'3분', q:'barbell squat'},
+        {n:'레그프레스', s:3, r:'10-12', rest:'2분', q:'leg press'},
+        {n:'루마니안 데드리프트', s:3, r:'8-10', rest:'2분', q:'romanian deadlift'},
+        {n:'라잉 레그컬', s:3, r:'10-12', rest:'75초', q:'lying leg curl'},
+        {n:'레그 익스텐션 (파이널)', s:7, r:'10-15', rest:'30-45초', f7:true, q:'leg extension'},
       ]},
     ]},
   { label:'DAY 5', title:'이두 · 삼두', hl:'이두',
+    coach:'https://www.youtube.com/watch?v=GtOvfvbReIE',
     groups:[
       { part:'이두', ex:[
-        {n:'바벨 컬', s:4, r:'8-10', rest:'90초'},
-        {n:'인클라인 덤벨 컬', s:3, r:'10-12', rest:'75초'},
-        {n:'EZ바 프리처 컬', s:7, r:'8-12', rest:'30-45초', f7:true},
+        {n:'바벨 컬', s:4, r:'8-10', rest:'90초', q:'barbell curl biceps'},
+        {n:'인클라인 덤벨 컬', s:3, r:'10-12', rest:'75초', q:'incline dumbbell curl'},
+        {n:'EZ바 프리처 컬', s:7, r:'8-12', rest:'30-45초', f7:true, q:'ez bar preacher curl'},
       ]},
       { part:'삼두', ex:[
-        {n:'클로즈그립 벤치프레스', s:3, r:'8-10', rest:'2분'},
-        {n:'로프 오버헤드 익스텐션', s:3, r:'10-12', rest:'75초'},
-        {n:'로프 푸시다운', s:7, r:'8-12', rest:'30-45초', f7:true},
+        {n:'클로즈그립 벤치프레스', s:3, r:'8-10', rest:'2분', q:'close grip bench press triceps'},
+        {n:'로프 오버헤드 익스텐션', s:3, r:'10-12', rest:'75초', q:'rope overhead triceps extension'},
+        {n:'로프 푸시다운', s:7, r:'8-12', rest:'30-45초', f7:true, q:'rope pushdown triceps'},
       ]},
     ]},
 ];
 
-/* ---------------- STATE ---------------- */
 let curDay = 0;
-const progress = {};           // key -> completed sets
+const progress = {};
 let water = 0;
+let soundOn = true;
 const key = (d,g,e)=>`${d}-${g}-${e}`;
 
-/* ---------------- RENDER ---------------- */
 const daysEl = document.getElementById('days');
 const mainEl = document.getElementById('main');
 
@@ -360,10 +555,13 @@ function totalSets(){let t=0,done=0;
 
 function renderMain(){
   const day=ROUTINE[curDay];
-  document.getElementById('dayTitle').innerHTML =
-    day.title.replace(day.hl,`<span>${day.hl}</span>`);
+  document.getElementById('dayTitle').innerHTML = day.title.replace(day.hl,`<span>${day.hl}</span>`);
   const {t,done}=totalSets();
   document.getElementById('dayProg').innerHTML=`세트 <b>${done}</b> / ${t}`;
+
+  const cb=document.getElementById('coachBanner');
+  cb.href=day.coach;
+  document.getElementById('coachSub').textContent=`${day.title} · 하니 램보드 영상`;
 
   mainEl.innerHTML='';
   day.groups.forEach((g,gi)=>{
@@ -381,7 +579,11 @@ function exCard(g,e,gi,ei){
   c.className='ex'+(e.f7?' f7':'');
   let html='';
   if(e.f7) html+=`<div class="f7tag"><span class="pulse"></span>FST-7 파이널</div>`;
-  html+=`<div class="top"><div class="name">${e.n}</div></div>
+  html+=`<div class="top">
+      <div class="name">${e.n}</div>
+      <a class="coachlink" href="${YT(e.q)}" target="_blank" rel="noopener"><span class="p"></span>코칭</a>
+    </div>
+    ${demoFor(e.q) ? `<div class="demowrap">${demoFor(e.q)}</div>` : ''}
     <div class="meta">
       <span class="chip"><b>${e.s}</b> 세트</span>
       <span class="chip"><b>${e.r}</b> 회</span>
@@ -404,7 +606,7 @@ function exCard(g,e,gi,ei){
       d.textContent=i+1;
       d.onclick=()=>{
         const cur=progress[key(curDay,gi,ei)]||0;
-        progress[key(curDay,gi,ei)] = (i+1===cur)? i : i+1; // tap same -> uncheck down
+        progress[key(curDay,gi,ei)] = (i+1===cur)? i : i+1;
         renderMain();
       };
       dots.appendChild(d);
@@ -415,7 +617,6 @@ function exCard(g,e,gi,ei){
   return c;
 }
 
-/* ---------------- HYDRATION ---------------- */
 const waterCountEl=document.getElementById('waterCount');
 const waterFillEl=document.getElementById('waterFill');
 document.getElementById('waterBtn').onclick=()=>{
@@ -424,10 +625,35 @@ document.getElementById('waterBtn').onclick=()=>{
   waterFillEl.style.width=(water/12*100)+'%';
 };
 
-/* ---------------- INFO TOGGLE ---------------- */
 document.getElementById('infoBtn').onclick=()=>document.getElementById('rules').classList.toggle('open');
+const soundBtn=document.getElementById('soundBtn');
+soundBtn.onclick=()=>{ soundOn=!soundOn; soundBtn.textContent=soundOn?'🔔 알림 ON':'🔕 알림 OFF';
+  soundBtn.classList.toggle('off',!soundOn); if(soundOn) ensureAC(); };
 
-/* ---------------- FST7 TIMER ENGINE ---------------- */
+/* ===== ALARM ENGINE (sound + vibration) ===== */
+let AC=null;
+function ensureAC(){ try{ AC=AC||new (window.AudioContext||window.webkitAudioContext)();
+  if(AC.state==='suspended') AC.resume(); }catch(e){} }
+function vibe(p){ try{ if(soundOn && navigator.vibrate) navigator.vibrate(p); }catch(e){} }
+function tone(freq,start,dur,vol){
+  if(!AC) return;
+  const t0=AC.currentTime+start;
+  const o=AC.createOscillator(),g=AC.createGain();
+  o.connect(g);g.connect(AC.destination);
+  o.type='sine';o.frequency.value=freq;
+  g.gain.setValueAtTime(.0001,t0);
+  g.gain.exponentialRampToValueAtTime(vol,t0+.02);
+  g.gain.exponentialRampToValueAtTime(.0001,t0+dur);
+  o.start(t0);o.stop(t0+dur+.03);
+}
+function alarmEnd(){ if(!soundOn) return; ensureAC();
+  tone(880,0,.16,.4); tone(1175,.20,.16,.4); tone(1568,.40,.34,.5);
+  vibe([200,80,200,80,380]); }
+function tick(){ if(!soundOn) return; ensureAC(); tone(700,0,.08,.28); vibe(50); }
+function alarmDone(){ if(!soundOn) return; ensureAC();
+  tone(784,0,.18,.4); tone(988,.20,.18,.4); tone(1319,.40,.5,.55);
+  vibe([300,100,300,100,550]); }
+
 const overlay=document.getElementById('overlay');
 const seg7El=document.getElementById('seg7');
 const stageEl=document.getElementById('stage');
@@ -436,6 +662,7 @@ const bigNum=document.getElementById('bigNum');
 const stageHint=document.getElementById('stageHint');
 const primaryBtn=document.getElementById('primaryBtn');
 const tExName=document.getElementById('tExName');
+const tCoach=document.getElementById('tCoach');
 
 let T = { gi:0, ei:0, ex:null, set:0, phase:'work', rest:40, remain:0, interval:null };
 
@@ -456,11 +683,13 @@ function paintSeg(){
 }
 
 function openTimer(gi,ei){
+  ensureAC();
   const ex=ROUTINE[curDay].groups[gi].ex[ei];
   T.gi=gi; T.ei=ei; T.ex=ex;
   T.set = (progress[key(curDay,gi,ei)]||0) >= 7 ? 0 : (progress[key(curDay,gi,ei)]||0);
   if(T.set>=7) T.set=0;
   tExName.textContent=ex.n;
+  tCoach.href=YT(ex.q);
   buildSeg7();
   goWork();
   overlay.classList.add('open');
@@ -482,6 +711,7 @@ function goWork(){
 }
 
 function finishSet(){
+  ensureAC();
   T.set++;
   progress[key(curDay,T.gi,T.ei)] = T.set;
   paintSeg();
@@ -505,7 +735,8 @@ function goRest(){
   T.interval=setInterval(()=>{
     T.remain--;
     bigNum.textContent=Math.max(0,T.remain);
-    if(T.remain<=0){ clearT(); beep(); goWork(); }
+    if(T.remain<=3 && T.remain>0){ stageEl.classList.add('warn'); tick(); }
+    if(T.remain<=0){ clearT(); alarmEnd(); goWork(); }
   },1000);
 }
 
@@ -520,10 +751,9 @@ function goDone(){
   primaryBtn.className='primary done';
   primaryBtn.onclick=closeTimer;
   paintSeg();
-  bigCheer();
+  alarmDone();
 }
 
-/* rest length picker */
 document.querySelectorAll('.rp').forEach(b=>{
   b.onclick=()=>{
     document.querySelectorAll('.rp').forEach(x=>x.classList.remove('sel'));
@@ -537,23 +767,6 @@ function closeTimer(){ clearT(); overlay.classList.remove('open'); renderMain();
 document.getElementById('closeX').onclick=closeTimer;
 overlay.addEventListener('click',e=>{ if(e.target===overlay) closeTimer(); });
 
-/* audio cue */
-let AC=null;
-function beep(){
-  try{
-    AC=AC||new (window.AudioContext||window.webkitAudioContext)();
-    const o=AC.createOscillator(),g=AC.createGain();
-    o.connect(g);g.connect(AC.destination);
-    o.type='sine';o.frequency.value=880;
-    g.gain.setValueAtTime(.0001,AC.currentTime);
-    g.gain.exponentialRampToValueAtTime(.3,AC.currentTime+.02);
-    g.gain.exponentialRampToValueAtTime(.0001,AC.currentTime+.35);
-    o.start();o.stop(AC.currentTime+.36);
-  }catch(e){}
-}
-function bigCheer(){ try{ beep(); setTimeout(beep,140);}catch(e){} }
-
-/* ---------------- INIT ---------------- */
 renderDays();
 renderMain();
 </script>
