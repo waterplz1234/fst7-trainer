@@ -1,0 +1,561 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>FST-7 Trainer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@600;700;800;900&family=Barlow+Semi+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#17110f; --ink2:#1e1613; --surface:#271d1a; --surface2:#31241f;
+    --line:rgba(255,255,255,.08); --line2:rgba(255,255,255,.14);
+    --blood:#ff2e45; --blood-deep:#c11833; --amber:#ffb020;
+    --teal:#2fd6c3; --teal-deep:#159b8c;
+    --text:#f6eee9; --muted:#a89b95; --muted2:#7c706b;
+    --r:16px;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;background:var(--ink);color:var(--text);
+    font-family:'Barlow',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  body{background:
+    radial-gradient(120% 80% at 100% 0%, rgba(255,46,69,.10), transparent 55%),
+    radial-gradient(120% 80% at 0% 100%, rgba(47,214,195,.06), transparent 55%),
+    var(--ink);
+    min-height:100dvh}
+  .wrap{max-width:520px;margin:0 auto;padding:0 16px 120px}
+
+  /* header */
+  header{padding:26px 2px 10px}
+  .brandrow{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .brand{display:flex;align-items:baseline;gap:10px}
+  .brand .fst{font-family:'Anton',sans-serif;font-size:34px;letter-spacing:.5px;line-height:.9}
+  .brand .seven{font-family:'Anton',sans-serif;font-size:34px;line-height:.9;
+    color:var(--blood);text-shadow:0 0 22px rgba(255,46,69,.55)}
+  .brand .sub{font-family:'Barlow Semi Condensed';font-weight:600;font-size:11px;
+    letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-top:6px}
+  .credit{font-size:11px;color:var(--muted2);letter-spacing:.02em;text-align:right;line-height:1.4}
+  .credit b{color:var(--muted);font-weight:600}
+
+  .info-btn{margin-top:14px;display:inline-flex;align-items:center;gap:7px;
+    background:var(--surface);border:1px solid var(--line);color:var(--muted);
+    font-family:'Barlow';font-weight:600;font-size:12.5px;padding:7px 12px;border-radius:999px;cursor:pointer}
+  .info-btn:hover{color:var(--text);border-color:var(--line2)}
+  .rules{margin-top:12px;background:var(--ink2);border:1px solid var(--line);
+    border-radius:var(--r);padding:14px 16px;display:none}
+  .rules.open{display:block;animation:fade .3s ease}
+  .rules h4{margin:0 0 8px;font-family:'Archivo';font-weight:800;font-size:13px;letter-spacing:.02em}
+  .rules ul{margin:0;padding-left:16px;font-size:13px;color:var(--muted);line-height:1.7}
+  .rules ul b{color:var(--text);font-weight:600}
+  .rules .kbar{color:var(--blood);font-weight:700}
+
+  /* day tabs */
+  .days{display:flex;gap:8px;overflow-x:auto;padding:16px 2px 4px;margin:0 -2px;
+    scrollbar-width:none}
+  .days::-webkit-scrollbar{display:none}
+  .day{flex:0 0 auto;min-width:96px;background:var(--surface);border:1px solid var(--line);
+    border-radius:14px;padding:10px 13px;cursor:pointer;transition:.18s;text-align:left}
+  .day .dl{font-family:'Barlow Semi Condensed';font-weight:700;font-size:11px;
+    letter-spacing:.14em;color:var(--muted2)}
+  .day .dt{font-family:'Archivo';font-weight:800;font-size:14.5px;margin-top:2px;white-space:nowrap}
+  .day.active{background:linear-gradient(160deg,var(--blood-deep),#7d1022);
+    border-color:transparent;box-shadow:0 8px 24px -8px rgba(255,46,69,.5)}
+  .day.active .dl{color:rgba(255,255,255,.75)}
+  .day.active .dt{color:#fff}
+
+  /* progress strip */
+  .dayhead{display:flex;align-items:center;justify-content:space-between;margin:22px 2px 6px}
+  .dayhead .h{font-family:'Archivo';font-weight:900;font-size:20px}
+  .dayhead .h span{color:var(--blood)}
+  .dayprog{font-family:'Barlow Semi Condensed';font-weight:600;font-size:12.5px;color:var(--muted)}
+  .dayprog b{color:var(--teal)}
+
+  /* group */
+  .group{margin-top:16px}
+  .glabel{display:flex;align-items:center;gap:10px;margin:0 2px 10px}
+  .glabel .gn{font-family:'Archivo';font-weight:800;font-size:13px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--muted)}
+  .glabel .gline{flex:1;height:1px;background:var(--line)}
+
+  /* exercise card */
+  .ex{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+    padding:14px 15px;margin-bottom:10px}
+  .ex .top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+  .ex .name{font-weight:600;font-size:15.5px;line-height:1.3}
+  .ex .meta{margin-top:7px;display:flex;gap:7px;flex-wrap:wrap}
+  .chip{font-family:'Barlow Semi Condensed';font-weight:600;font-size:12px;
+    background:var(--ink2);border:1px solid var(--line);border-radius:8px;padding:3px 8px;color:var(--muted)}
+  .chip b{color:var(--text);font-weight:700}
+  .chip.rest{color:var(--teal)}
+
+  .dots{display:flex;gap:5px;flex-wrap:wrap;margin-top:12px}
+  .dot{width:26px;height:26px;border-radius:8px;border:1.5px solid var(--line2);
+    background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;
+    font-family:'Barlow Semi Condensed';font-weight:700;font-size:11px;color:var(--muted2);transition:.15s}
+  .dot.on{background:var(--blood);border-color:var(--blood);color:#fff;
+    box-shadow:0 0 14px -2px rgba(255,46,69,.7)}
+
+  /* FST7 card */
+  .ex.f7{border:1px solid rgba(255,46,69,.4);
+    background:linear-gradient(180deg,rgba(255,46,69,.09),rgba(255,46,69,.02));
+    box-shadow:inset 0 0 0 1px rgba(255,46,69,.08)}
+  .f7tag{display:inline-flex;align-items:center;gap:6px;font-family:'Archivo';font-weight:900;
+    font-size:10.5px;letter-spacing:.14em;color:var(--blood);margin-bottom:8px}
+  .f7tag .pulse{width:7px;height:7px;border-radius:50%;background:var(--blood);
+    box-shadow:0 0 0 0 rgba(255,46,69,.6);animation:pulse 1.6s infinite}
+  .startbtn{margin-top:13px;width:100%;border:none;cursor:pointer;border-radius:12px;
+    padding:14px;font-family:'Archivo';font-weight:900;font-size:14.5px;letter-spacing:.04em;color:#fff;
+    background:linear-gradient(120deg,var(--blood),var(--blood-deep));
+    box-shadow:0 10px 26px -10px rgba(255,46,69,.7)}
+  .startbtn:active{transform:translateY(1px)}
+  .startbtn.done{background:var(--surface2);color:var(--teal);
+    border:1px solid rgba(47,214,195,.35);box-shadow:none}
+
+  /* hydration footer bar */
+  .hydro{position:fixed;left:0;right:0;bottom:0;z-index:40;
+    background:rgba(23,17,15,.82);backdrop-filter:blur(14px);border-top:1px solid var(--line)}
+  .hydro .in{max-width:520px;margin:0 auto;padding:12px 18px calc(12px + env(safe-area-inset-bottom));
+    display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .hydro .lab{font-family:'Barlow Semi Condensed';font-weight:600;font-size:12.5px;color:var(--muted)}
+  .hydro .lab b{color:var(--teal);font-weight:700}
+  .hydro .track{flex:1;height:8px;border-radius:99px;background:var(--surface2);overflow:hidden;margin:0 4px}
+  .hydro .fill{height:100%;width:0;background:linear-gradient(90deg,var(--teal-deep),var(--teal));
+    transition:width .4s ease}
+  .hydro button{border:none;cursor:pointer;background:var(--surface2);color:var(--teal);
+    width:36px;height:36px;border-radius:10px;font-size:18px;font-weight:700;
+    border:1px solid rgba(47,214,195,.3)}
+  .hydro button:active{transform:scale(.94)}
+
+  /* ==== FST7 TIMER OVERLAY ==== */
+  .overlay{position:fixed;inset:0;z-index:60;background:rgba(10,7,6,.7);
+    backdrop-filter:blur(8px);display:none;align-items:flex-end;justify-content:center}
+  .overlay.open{display:flex;animation:fade .25s ease}
+  .sheet{width:100%;max-width:520px;background:var(--ink2);
+    border:1px solid var(--line2);border-bottom:none;border-radius:24px 24px 0 0;
+    padding:20px 20px calc(28px + env(safe-area-inset-bottom));animation:slideup .32s cubic-bezier(.2,.8,.2,1)}
+  .grab{width:44px;height:4px;border-radius:99px;background:var(--muted2);opacity:.5;margin:0 auto 16px}
+  .sheet .exname{font-family:'Archivo';font-weight:800;font-size:18px;text-align:center}
+  .sheet .exsub{text-align:center;color:var(--muted);font-family:'Barlow Semi Condensed';
+    font-weight:600;font-size:12.5px;letter-spacing:.06em;margin-top:3px}
+
+  /* seven segments */
+  .seg7{display:flex;gap:7px;justify-content:center;margin:20px 0 6px}
+  .seg{flex:1;max-width:38px;height:52px;border-radius:9px;background:var(--surface);
+    border:1px solid var(--line);position:relative;overflow:hidden;transition:.2s}
+  .seg .fillbar{position:absolute;inset:0;transform:translateY(100%);
+    background:linear-gradient(180deg,var(--blood),var(--blood-deep));transition:transform .5s cubic-bezier(.3,.9,.3,1)}
+  .seg.filled .fillbar{transform:translateY(0)}
+  .seg.active{border-color:var(--teal);box-shadow:0 0 0 1px var(--teal),0 0 20px -4px var(--teal)}
+  .seg .num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    font-family:'Barlow Semi Condensed';font-weight:700;font-size:14px;color:var(--muted2);z-index:2}
+  .seg.filled .num{color:#fff}
+  .seg.active .num{color:var(--teal)}
+
+  /* big stage */
+  .stage{text-align:center;padding:14px 0 4px}
+  .stagelabel{font-family:'Barlow Semi Condensed';font-weight:700;font-size:12px;
+    letter-spacing:.2em;text-transform:uppercase}
+  .stage.work .stagelabel{color:var(--blood)}
+  .stage.rest .stagelabel{color:var(--teal)}
+  .stage.done .stagelabel{color:var(--amber)}
+  .bignum{font-family:'Anton',sans-serif;font-size:76px;line-height:.92;margin:2px 0}
+  .stage.work .bignum{color:var(--text)}
+  .stage.rest .bignum{color:var(--teal);text-shadow:0 0 30px rgba(47,214,195,.4)}
+  .stage.done .bignum{color:var(--amber);font-size:52px}
+  .stagehint{color:var(--muted);font-size:13.5px;min-height:20px}
+  .stagehint .water{color:var(--teal);font-weight:600}
+
+  .ring{width:0;height:0}
+  .primary{margin-top:16px;width:100%;border:none;cursor:pointer;border-radius:14px;padding:17px;
+    font-family:'Archivo';font-weight:900;font-size:16px;letter-spacing:.04em;color:#fff;
+    background:linear-gradient(120deg,var(--blood),var(--blood-deep));
+    box-shadow:0 12px 30px -12px rgba(255,46,69,.8)}
+  .primary.rest{background:linear-gradient(120deg,var(--teal),var(--teal-deep));
+    box-shadow:0 12px 30px -12px rgba(47,214,195,.7);color:#04211d}
+  .primary.done{background:linear-gradient(120deg,var(--amber),#d98800);color:#241500}
+  .primary:active{transform:translateY(1px)}
+
+  .restctl{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:14px}
+  .restctl .lab{font-family:'Barlow Semi Condensed';font-weight:600;font-size:11px;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--muted2);margin-right:2px}
+  .rp{background:var(--surface);border:1px solid var(--line);color:var(--muted);
+    font-family:'Barlow Semi Condensed';font-weight:700;font-size:13px;padding:7px 12px;border-radius:9px;cursor:pointer}
+  .rp.sel{background:var(--teal);border-color:var(--teal);color:#04211d}
+  .closex{margin-top:14px;width:100%;background:transparent;border:none;color:var(--muted2);
+    font-family:'Barlow';font-weight:600;font-size:13px;cursor:pointer;padding:6px}
+
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,46,69,.6)}70%{box-shadow:0 0 0 8px rgba(255,46,69,0)}100%{box-shadow:0 0 0 0 rgba(255,46,69,0)}}
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+  @keyframes slideup{from{transform:translateY(30px);opacity:.4}to{transform:translateY(0);opacity:1}}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brandrow">
+      <div>
+        <div class="brand"><span class="fst">FST</span><span class="seven">-7</span></div>
+        <div class="sub">Fascia Stretch Training</div>
+      </div>
+      <div class="credit"><b>Hany Rambod</b> 방식<br>2026 루틴</div>
+    </div>
+    <button class="info-btn" id="infoBtn">ⓘ FST-7 규칙</button>
+    <div class="rules" id="rules">
+      <h4>핵심 원리</h4>
+      <ul>
+        <li>각 부위 <b>마지막 고립운동</b>에만 적용 — <span class="kbar">7세트 × 8~12회</span></li>
+        <li>세트 사이 휴식은 <b>30~45초</b>만. 짧게 유지 = 펌핑·근막 확장 극대화</li>
+        <li>머신·케이블 위주. 무거운 복합운동엔 X (자세 무너짐)</li>
+        <li>세트마다 <b>물 한 모금</b>, 하루 3~4L. 혈액 90%가 물이라 펌핑에 직결</li>
+        <li>초보라면 주당 FST-7 파이널은 <b>2개 부위</b>까지만</li>
+      </ul>
+    </div>
+  </header>
+
+  <nav class="days" id="days"></nav>
+
+  <div class="dayhead">
+    <div class="h" id="dayTitle"></div>
+    <div class="dayprog" id="dayProg"></div>
+  </div>
+
+  <main id="main"></main>
+</div>
+
+<!-- hydration bar -->
+<div class="hydro">
+  <div class="in">
+    <div class="lab">💧 물 <b id="waterCount">0</b>/12</div>
+    <div class="track"><div class="fill" id="waterFill"></div></div>
+    <button id="waterBtn">+</button>
+  </div>
+</div>
+
+<!-- FST7 timer overlay -->
+<div class="overlay" id="overlay">
+  <div class="sheet">
+    <div class="grab"></div>
+    <div class="exname" id="tExName">—</div>
+    <div class="exsub" id="tExSub">FST-7 파이널 · 7세트</div>
+
+    <div class="seg7" id="seg7"></div>
+
+    <div class="stage work" id="stage">
+      <div class="stagelabel" id="stageLabel">SET 1 / 7</div>
+      <div class="bignum" id="bigNum">8~12</div>
+      <div class="stagehint" id="stageHint">최대 펌핑까지 밀어붙여라</div>
+    </div>
+
+    <button class="primary" id="primaryBtn">세트 완료 ✓</button>
+
+    <div class="restctl">
+      <span class="lab">휴식</span>
+      <button class="rp" data-r="30">30s</button>
+      <button class="rp sel" data-r="40">40s</button>
+      <button class="rp" data-r="45">45s</button>
+    </div>
+
+    <button class="closex" id="closeX">닫기</button>
+  </div>
+</div>
+
+<script>
+/* ---------------- ROUTINE DATA (2026 FST-7 5-day split) ---------------- */
+const ROUTINE = [
+  { label:'DAY 1', title:'가슴 · 삼두', hl:'가슴',
+    groups:[
+      { part:'가슴', ex:[
+        {n:'인클라인 바벨 벤치프레스', s:4, r:'8-10', rest:'2-3분'},
+        {n:'플랫 덤벨 프레스', s:3, r:'8-10', rest:'2분'},
+        {n:'케이블 크로스오버', s:3, r:'10-12', rest:'60초'},
+        {n:'펙덱 플라이', s:7, r:'8-12', rest:'30-45초', f7:true},
+      ]},
+      { part:'삼두', ex:[
+        {n:'딥스', s:3, r:'8-10', rest:'90초'},
+        {n:'오버헤드 덤벨 익스텐션', s:3, r:'10-12', rest:'75초'},
+        {n:'케이블 로프 푸시다운', s:7, r:'8-12', rest:'30-45초', f7:true},
+      ]},
+    ]},
+  { label:'DAY 2', title:'등 · 종아리', hl:'등',
+    groups:[
+      { part:'등', ex:[
+        {n:'데드리프트 (또는 랙풀)', s:4, r:'6-8', rest:'3분'},
+        {n:'와이드 랫풀다운', s:3, r:'8-10', rest:'2분'},
+        {n:'바벨 로우', s:3, r:'8-10', rest:'2분'},
+        {n:'시티드 케이블 로우', s:3, r:'10-12', rest:'90초'},
+        {n:'스트레이트암 랫풀다운', s:7, r:'8-12', rest:'30-45초', f7:true},
+      ]},
+      { part:'종아리', ex:[
+        {n:'스탠딩 카프 레이즈', s:3, r:'10-15', rest:'75초'},
+        {n:'시티드 카프 레이즈', s:7, r:'10-15', rest:'30-45초', f7:true},
+      ]},
+    ]},
+  { label:'DAY 3', title:'어깨 · 승모', hl:'어깨',
+    groups:[
+      { part:'어깨', ex:[
+        {n:'시티드 덤벨 숄더프레스', s:4, r:'8-10', rest:'2분'},
+        {n:'사이드 레터럴 레이즈', s:3, r:'10-12', rest:'75초'},
+        {n:'리어델트 펙덱 플라이', s:3, r:'12-15', rest:'60초'},
+        {n:'케이블 사이드 레터럴 레이즈', s:7, r:'8-12', rest:'30-45초', f7:true},
+      ]},
+      { part:'승모', ex:[
+        {n:'덤벨 슈러그', s:3, r:'10-12', rest:'75초'},
+        {n:'케이블 슈러그', s:7, r:'10-12', rest:'30-45초', f7:true},
+      ]},
+    ]},
+  { label:'DAY 4', title:'하체', hl:'하체',
+    groups:[
+      { part:'하체', ex:[
+        {n:'레그 익스텐션 (웜업)', s:3, r:'15-20', rest:'45초'},
+        {n:'바벨 스쿼트', s:4, r:'8-10', rest:'3분'},
+        {n:'레그프레스', s:3, r:'10-12', rest:'2분'},
+        {n:'루마니안 데드리프트', s:3, r:'8-10', rest:'2분'},
+        {n:'라잉 레그컬', s:3, r:'10-12', rest:'75초'},
+        {n:'레그 익스텐션 (파이널)', s:7, r:'10-15', rest:'30-45초', f7:true},
+      ]},
+    ]},
+  { label:'DAY 5', title:'이두 · 삼두', hl:'이두',
+    groups:[
+      { part:'이두', ex:[
+        {n:'바벨 컬', s:4, r:'8-10', rest:'90초'},
+        {n:'인클라인 덤벨 컬', s:3, r:'10-12', rest:'75초'},
+        {n:'EZ바 프리처 컬', s:7, r:'8-12', rest:'30-45초', f7:true},
+      ]},
+      { part:'삼두', ex:[
+        {n:'클로즈그립 벤치프레스', s:3, r:'8-10', rest:'2분'},
+        {n:'로프 오버헤드 익스텐션', s:3, r:'10-12', rest:'75초'},
+        {n:'로프 푸시다운', s:7, r:'8-12', rest:'30-45초', f7:true},
+      ]},
+    ]},
+];
+
+/* ---------------- STATE ---------------- */
+let curDay = 0;
+const progress = {};           // key -> completed sets
+let water = 0;
+const key = (d,g,e)=>`${d}-${g}-${e}`;
+
+/* ---------------- RENDER ---------------- */
+const daysEl = document.getElementById('days');
+const mainEl = document.getElementById('main');
+
+function renderDays(){
+  daysEl.innerHTML = '';
+  ROUTINE.forEach((d,i)=>{
+    const b=document.createElement('button');
+    b.className='day'+(i===curDay?' active':'');
+    b.innerHTML=`<div class="dl">${d.label}</div><div class="dt">${d.title}</div>`;
+    b.onclick=()=>{curDay=i;renderDays();renderMain();window.scrollTo({top:0,behavior:'smooth'});};
+    daysEl.appendChild(b);
+  });
+}
+
+function totalSets(){let t=0,done=0;
+  ROUTINE[curDay].groups.forEach((g,gi)=>g.ex.forEach((e,ei)=>{
+    t+=e.s; done+=(progress[key(curDay,gi,ei)]||0);}));
+  return {t,done};
+}
+
+function renderMain(){
+  const day=ROUTINE[curDay];
+  document.getElementById('dayTitle').innerHTML =
+    day.title.replace(day.hl,`<span>${day.hl}</span>`);
+  const {t,done}=totalSets();
+  document.getElementById('dayProg').innerHTML=`세트 <b>${done}</b> / ${t}`;
+
+  mainEl.innerHTML='';
+  day.groups.forEach((g,gi)=>{
+    const gEl=document.createElement('section');
+    gEl.className='group';
+    gEl.innerHTML=`<div class="glabel"><span class="gn">${g.part}</span><span class="gline"></span></div>`;
+    g.ex.forEach((e,ei)=>gEl.appendChild(exCard(g,e,gi,ei)));
+    mainEl.appendChild(gEl);
+  });
+}
+
+function exCard(g,e,gi,ei){
+  const done=progress[key(curDay,gi,ei)]||0;
+  const c=document.createElement('div');
+  c.className='ex'+(e.f7?' f7':'');
+  let html='';
+  if(e.f7) html+=`<div class="f7tag"><span class="pulse"></span>FST-7 파이널</div>`;
+  html+=`<div class="top"><div class="name">${e.n}</div></div>
+    <div class="meta">
+      <span class="chip"><b>${e.s}</b> 세트</span>
+      <span class="chip"><b>${e.r}</b> 회</span>
+      <span class="chip rest">휴식 ${e.rest}</span>
+    </div>`;
+
+  if(e.f7){
+    const label = done>=e.s ? '완료 · 다시 하기 🔁' : (done>0?`이어서 (${done}/7) ▶`:'7세트 타이머 시작 ▶');
+    html+=`<button class="startbtn ${done>=e.s?'done':''}" data-open="${gi}-${ei}">${label}</button>`;
+  }else{
+    html+=`<div class="dots" data-dots="${gi}-${ei}"></div>`;
+  }
+  c.innerHTML=html;
+
+  if(!e.f7){
+    const dots=c.querySelector('[data-dots]');
+    for(let i=0;i<e.s;i++){
+      const d=document.createElement('button');
+      d.className='dot'+(i<done?' on':'');
+      d.textContent=i+1;
+      d.onclick=()=>{
+        const cur=progress[key(curDay,gi,ei)]||0;
+        progress[key(curDay,gi,ei)] = (i+1===cur)? i : i+1; // tap same -> uncheck down
+        renderMain();
+      };
+      dots.appendChild(d);
+    }
+  }else{
+    c.querySelector('[data-open]').onclick=()=>openTimer(gi,ei);
+  }
+  return c;
+}
+
+/* ---------------- HYDRATION ---------------- */
+const waterCountEl=document.getElementById('waterCount');
+const waterFillEl=document.getElementById('waterFill');
+document.getElementById('waterBtn').onclick=()=>{
+  water=Math.min(12,water+1);
+  waterCountEl.textContent=water;
+  waterFillEl.style.width=(water/12*100)+'%';
+};
+
+/* ---------------- INFO TOGGLE ---------------- */
+document.getElementById('infoBtn').onclick=()=>document.getElementById('rules').classList.toggle('open');
+
+/* ---------------- FST7 TIMER ENGINE ---------------- */
+const overlay=document.getElementById('overlay');
+const seg7El=document.getElementById('seg7');
+const stageEl=document.getElementById('stage');
+const stageLabel=document.getElementById('stageLabel');
+const bigNum=document.getElementById('bigNum');
+const stageHint=document.getElementById('stageHint');
+const primaryBtn=document.getElementById('primaryBtn');
+const tExName=document.getElementById('tExName');
+
+let T = { gi:0, ei:0, ex:null, set:0, phase:'work', rest:40, remain:0, interval:null };
+
+function buildSeg7(){
+  seg7El.innerHTML='';
+  for(let i=0;i<7;i++){
+    const s=document.createElement('div');
+    s.className='seg';
+    s.innerHTML=`<div class="fillbar"></div><div class="num">${i+1}</div>`;
+    seg7El.appendChild(s);
+  }
+}
+function paintSeg(){
+  [...seg7El.children].forEach((s,i)=>{
+    s.classList.toggle('filled', i<T.set);
+    s.classList.toggle('active', i===T.set && T.phase!=='done');
+  });
+}
+
+function openTimer(gi,ei){
+  const ex=ROUTINE[curDay].groups[gi].ex[ei];
+  T.gi=gi; T.ei=ei; T.ex=ex;
+  T.set = (progress[key(curDay,gi,ei)]||0) >= 7 ? 0 : (progress[key(curDay,gi,ei)]||0);
+  if(T.set>=7) T.set=0;
+  tExName.textContent=ex.n;
+  buildSeg7();
+  goWork();
+  overlay.classList.add('open');
+}
+
+function clearT(){ if(T.interval){clearInterval(T.interval);T.interval=null;} }
+
+function goWork(){
+  clearT();
+  T.phase='work';
+  stageEl.className='stage work';
+  stageLabel.textContent=`SET ${T.set+1} / 7`;
+  bigNum.textContent=T.ex.r+'회';
+  stageHint.textContent='최대 펌핑까지 밀어붙여라 🔥';
+  primaryBtn.textContent='세트 완료 ✓';
+  primaryBtn.className='primary';
+  primaryBtn.onclick=finishSet;
+  paintSeg();
+}
+
+function finishSet(){
+  T.set++;
+  progress[key(curDay,T.gi,T.ei)] = T.set;
+  paintSeg();
+  if(T.set>=7){ goDone(); renderMain(); return; }
+  goRest();
+  renderMain();
+}
+
+function goRest(){
+  clearT();
+  T.phase='rest';
+  T.remain=T.rest;
+  stageEl.className='stage rest';
+  stageLabel.textContent='REST';
+  bigNum.textContent=T.remain;
+  stageHint.innerHTML='<span class="water">💧 물 한 모금</span> · 근막 안 빠지게';
+  primaryBtn.textContent='건너뛰고 다음 세트 ⏭';
+  primaryBtn.className='primary rest';
+  primaryBtn.onclick=()=>{clearT();goWork();};
+  paintSeg();
+  T.interval=setInterval(()=>{
+    T.remain--;
+    bigNum.textContent=Math.max(0,T.remain);
+    if(T.remain<=0){ clearT(); beep(); goWork(); }
+  },1000);
+}
+
+function goDone(){
+  clearT();
+  T.phase='done';
+  stageEl.className='stage done';
+  stageLabel.textContent='FST-7 COMPLETE';
+  bigNum.textContent='7 / 7';
+  stageHint.textContent='펌핑 미쳤다. 근막 확장 성공 💪';
+  primaryBtn.textContent='닫기';
+  primaryBtn.className='primary done';
+  primaryBtn.onclick=closeTimer;
+  paintSeg();
+  bigCheer();
+}
+
+/* rest length picker */
+document.querySelectorAll('.rp').forEach(b=>{
+  b.onclick=()=>{
+    document.querySelectorAll('.rp').forEach(x=>x.classList.remove('sel'));
+    b.classList.add('sel');
+    T.rest=parseInt(b.dataset.r,10);
+    if(T.phase==='rest'){ T.remain=Math.min(T.remain,T.rest)||T.rest; }
+  };
+});
+
+function closeTimer(){ clearT(); overlay.classList.remove('open'); renderMain(); }
+document.getElementById('closeX').onclick=closeTimer;
+overlay.addEventListener('click',e=>{ if(e.target===overlay) closeTimer(); });
+
+/* audio cue */
+let AC=null;
+function beep(){
+  try{
+    AC=AC||new (window.AudioContext||window.webkitAudioContext)();
+    const o=AC.createOscillator(),g=AC.createGain();
+    o.connect(g);g.connect(AC.destination);
+    o.type='sine';o.frequency.value=880;
+    g.gain.setValueAtTime(.0001,AC.currentTime);
+    g.gain.exponentialRampToValueAtTime(.3,AC.currentTime+.02);
+    g.gain.exponentialRampToValueAtTime(.0001,AC.currentTime+.35);
+    o.start();o.stop(AC.currentTime+.36);
+  }catch(e){}
+}
+function bigCheer(){ try{ beep(); setTimeout(beep,140);}catch(e){} }
+
+/* ---------------- INIT ---------------- */
+renderDays();
+renderMain();
+</script>
+</body>
+</html>
